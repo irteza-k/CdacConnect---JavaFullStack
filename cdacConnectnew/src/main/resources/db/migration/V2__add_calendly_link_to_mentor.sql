@@ -1,0 +1,1 @@
+ALTER TABLE mentor ADD calendly_link VARCHAR(255); 

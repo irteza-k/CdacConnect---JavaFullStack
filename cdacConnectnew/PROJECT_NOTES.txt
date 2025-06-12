@@ -1,0 +1,113 @@
+---
+CDAC Connect - Project Structure and Flow
+---
+
+1. Frontend Structure (React Application)
+- Entry Points: main.jsx, App.jsx
+- Authentication: LoginForm.jsx, StudentRegistrationForm.jsx, MentorRegistrationForm.jsx
+- User Dashboards: StudentHomePage.jsx, MentorHomePage.jsx
+- Profile Management: ProfilePage.jsx
+- Meeting Management: MeetingSchedulePage.jsx
+- Notifications: NotificationPage.jsx
+- Additional Pages: AboutPage.jsx, FAQPage.jsx, ContactPage.jsx, Dashboard.jsx
+
+2. Backend Structure (Java Spring Boot)
+- config/: SecurityConfig.java, CORS/CSRF config
+- controller/: REST API endpoints
+- service/: Business logic
+- repository/: Data access
+- entity/: Database models
+
+3. Data Flow
+- User interacts with frontend
+- Frontend makes API calls
+- Backend controllers receive requests
+- Services process requests
+- Repositories interact with DB
+- Response flows back to frontend
+- UI updates
+
+4. Security Flow
+- User logs in via LoginForm
+- Backend validates credentials
+- JWT token generated and sent to frontend
+- Token stored in sessionStorage
+- Token included in API requests
+- Backend validates token
+
+5. Meeting Flow
+- Student views mentors
+- Student requests meeting
+- Mentor receives notification
+- Mentor accepts/rejects
+- Student receives update
+- Meeting scheduled if accepted
+
+6. Technology Stack
+- Frontend: React.js
+- Backend: Java Spring Boot
+- Database: MySQL/PostgreSQL
+- Authentication: JWT-based
+- Features: Calendly integration
+
+---
+CDAC Connect - Styling Guide
+---
+
+1. Styling Framework: Bootstrap (main), custom CSS
+2. Bootstrap Integration: import 'bootstrap/dist/css/bootstrap.min.css'; import 'bootstrap-icons/font/bootstrap-icons.css';
+3. Layout: container, row, col-*
+4. Components: card, navbar, modal
+5. Utilities: d-flex, text-center, mb-3
+6. Icons: bi bi-*
+7. Responsive: d-none d-md-block, col-md-6 col-lg-4, d-sm-inline
+8. Component Styling: StudentHomePage, MentorHomePage, ProfilePage
+9. Interactive: btn btn-primary, btn-outline-light, form-control, form-select
+10. Status: alert alert-success, alert alert-danger, badge bg-primary, badge bg-success
+11. Custom: hover-shadow, custom colors/spacing, responsive adjustments
+12. Not Used: Tailwind, Styled Components, CSS Modules, CSS-in-JS
+13. Best Practices: Use Bootstrap, custom CSS for needs, mobile-first, consistent naming, modular, responsive
+
+---
+CDAC Connect - Database Structure
+---
+
+1. Entities: Students, Mentors, Meetings, Skills, Notifications
+2. Relationships: One-to-many (Mentor-Meetings, Student-Meetings, User-Notifications), Many-to-many (Mentor-Skills)
+3. Example Table: students, mentors, skills, mentor_skills, meetings, notifications
+4. Indexes: email, status, meeting_date, notification_user
+5. Data Types: BIGINT, VARCHAR, TEXT, TIMESTAMP, ENUM, BOOLEAN
+6. Constraints: PRIMARY KEY, FOREIGN KEY, UNIQUE, NOT NULL, DEFAULT, ON DELETE CASCADE
+7. Common Queries: Get mentor with skills, get student's meetings, get mentor's meeting requests
+8. Security: BCrypt password hashing, JWT, encrypted sensitive data
+9. Backup: Automated backups, index optimization, archiving, monitoring
+10. Config: spring.datasource.url, username, password, hibernate settings
+
+---
+CDAC Connect - Design Patterns, MVC Architecture, and Annotations
+---
+
+1. Design Patterns: MVC, Service Layer, Repository, Dependency Injection, Singleton
+2. MVC: Model (entity), View (React), Controller (controller), Service (service), Repository (repository)
+3. Annotations: @Component, @Autowired, @Bean, @RestController, @Controller, @RequestMapping, @GetMapping, @PostMapping, @PutMapping, @DeleteMapping, @PathVariable, @RequestBody, @RequestParam, @ResponseBody, @Entity, @Id, @GeneratedValue, @Repository, @EnableWebSecurity, @Configuration, @Service, @EnableAutoConfiguration
+4. How They Work: Controller -> Service -> Repository -> Entity, Spring manages dependencies
+5. Example Flow: Frontend POST /api/meetings -> MeetingController -> MeetingService -> MeetingRepository -> Meeting (entity)
+
+---
+CDAC Connect - Frontend & Backend API Mapping
+---
+
+1. Controllers: Java classes in controller/ define endpoints with @GetMapping, @PostMapping, etc.
+2. Frontend: Uses Axios/fetch to call endpoints
+3. Mapping Table:
+| Frontend File                | API Endpoint Called                        | HTTP Method | Backend Controller File      | Backend Controller Method                        |
+|------------------------------|--------------------------------------------|-------------|-----------------------------|--------------------------------------------------|
+| LoginForm.jsx                | /api/mentors/login                         | POST        | MentorController.java        | @PostMapping("/api/mentors/login")              |
+| StudentRegistrationForm.jsx  | /api/students                              | POST        | StudentController.java       | @PostMapping("/api/students")                   |
+| MentorHomePage.jsx           | /api/meetings/mentor/{id}/requests         | GET         | MeetingController.java       | @GetMapping("/api/meetings/mentor/{mentorId}/requests") |
+| MentorHomePage.jsx           | /api/meetings/{id}                         | PUT         | MeetingController.java       | @PutMapping("/api/meetings/{id}")               |
+| StudentHomePage.jsx          | /api/mentors                               | GET         | MentorController.java        | @GetMapping("/api/mentors")                     |
+4. Data Flow: User action -> Frontend request -> Backend controller -> Service/Repository -> Response -> UI update
+5. How to Find: Search frontend for axios/fetch, match URL to controller
+6. Example: Approving/Rejecting a Meeting (PUT /api/meetings/{id})
+7. Summary: Controllers define endpoints, frontend calls them, data is JSON 
